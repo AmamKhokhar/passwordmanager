@@ -1,12 +1,25 @@
 const bodyParser = require('body-parser')
 const express = require('express')
-const app = express()
+const dotenv = require('dotenv')
+const { MongoClient } = require('mongodb')
 const cors = require('cors')
-// require('dotenv').config()
+
+require('dotenv').config();
+
+
+const url = 'mongodb://localhost:27017';
+const client = new MongoClient(url);
+
 // console.log(process.env)
+
+const dbName = 'passop'
+const app = express()
+const port = 3000
+
 app.use(bodyParser.json())
 app.use(cors())
-const port = 3000
+
+client.connect();
 
 app.get('/', async (req, res) => {
   const db = client.db(dbName);

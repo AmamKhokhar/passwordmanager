@@ -12,7 +12,7 @@ const Manager = () => {
     console.log(password)
     setpasswordArray(password);
    
-    
+     
   }
 
   useEffect(() => {
@@ -24,14 +24,18 @@ const Manager = () => {
   const savePassword = async() => {
     console.log(form);
 
-    await fetch("http://localhost:3000/",{method:"POST" ,
-      headers: {"Content-Type":"application/json"}, body: JSON.stringify({id: form.id})})
+    await fetch("http://localhost:3000/",{method:"DELETE" ,
+      headers: {"Content-Type":"application/json"}, body: JSON.stringify({id:form.id})})
 
     setpasswordArray([...passwordArray, {...form, id: uuidv4()}]);
-    // localStorage.setItem("password", JSON.stringify([...passwordArray, {...form, id: uuidv4()}]));
     await fetch("http://localhost:3000/",{method:"POST" ,
-       headers: {"Content-Type":"application/json"}, body: JSON.stringify({...form,id: uuidv4()})})
-    console.log(passwordArray);
+      headers: {"Content-Type":"application/json"}, body: JSON.stringify({...form,id:uuidv4()})})
+
+    setform({site: "",username: "",password: ""})
+    // localStorage.setItem("password", JSON.stringify([...passwordArray, {...form, id: uuidv4()}]));
+    // await fetch("http://localhost:3000/",{method:"POST" ,
+    //    headers: {"Content-Type":"application/json"}, body: JSON.stringify({...form,id: uuidv4()})})
+    // console.log(passwordArray);
   };
 
   
@@ -39,19 +43,15 @@ const Manager = () => {
     console.log("Deleting Password With id: " , id);
     setpasswordArray(passwordArray.filter(item=>item.id!==id));
     // localStorage.setItem("password", JSON.stringify(passwordArray.filter(item=>item.id!==id)));
-    let res = await fetch("http://localhost:3000/",{method:"POST" ,
+    let res = await fetch("http://localhost:3000/",{method:"DELETE" ,
       headers: {"Content-Type":"application/json"}, body: JSON.stringify({id})})
 //     console.log(passwordArray);
   };
 
   const editPassword = (id) => {
     console.log("Editing Password With id: ", id);
-    
-    const itemToEdit = passwordArray.find(i => i.id === id);  // Find the item to edit
-    setform({ ...itemToEdit });  // Set the form state with the found item
-  
-    const updatedPasswordArray = passwordArray.filter(item => item.id !== id);  // Filter out the item being edited
-    setpasswordArray(updatedPasswordArray); 
+    setform({ ...passwordArray.filter(i => i.id === id)[0],id: id });  // Set the form state with the found item
+    setpasswordArray(passwordArray.filter(item => item.id !== id)); 
 //     localStorage.setItem("password", JSON.stringify([...passwordArray, {...form, id: uuidv4()}]));
 //     console.log(passwordArray);
   };
