@@ -45,9 +45,13 @@ const Manager = () => {
   };
 
   const editPassword = (id) => {
-    console.log("Editing Password With id: " , id);
-    setform(...passwordArray.filter(i=>i.id===id)[0] ,id: id)
-    setpasswordArray(passwordArray.filter(item=>item.id!==id));
+    console.log("Editing Password With id: ", id);
+    
+    const itemToEdit = passwordArray.find(i => i.id === id);  // Find the item to edit
+    setform({ ...itemToEdit });  // Set the form state with the found item
+  
+    const updatedPasswordArray = passwordArray.filter(item => item.id !== id);  // Filter out the item being edited
+    setpasswordArray(updatedPasswordArray); 
 //     localStorage.setItem("password", JSON.stringify([...passwordArray, {...form, id: uuidv4()}]));
 //     console.log(passwordArray);
   };
